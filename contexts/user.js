@@ -17,9 +17,18 @@ const UsuarioProvider = ({ children }) => {
         return listener
     },[])
 
+    const resetPassword = (email) => {
+        firebase.auth().sendPasswordResetEmail(email).then(resp => {
+            console.warn(resp)
+        }).catch(err => {
+            if(err == "Error: There is no user record corresponding to this identifier. The user may have been deleted."){
+                console.warn("Não há registro para o e-mail informado.")
+            }
+        })
+    }
+
     const signIn = (email, password) => {
         firebase.auth().signInWithEmailAndPassword(email, password).then(resp => {
-            console.warn(resp)
         }).catch(err => {
             console.log(err)
             if(err == "Error: There is no user record corresponding to this identifier. The user may have been deleted."){
@@ -37,7 +46,6 @@ const UsuarioProvider = ({ children }) => {
 
     const signUp = (email, password) => {
         firebase.auth().createUserWithEmailAndPassword(email, password).then(resp => {
-            console.warn(resp)
         }).catch(err => {
             console.warn(err)
         })
@@ -52,7 +60,7 @@ const UsuarioProvider = ({ children }) => {
     }
 
     return(
-        <UsuarioContext.Provider value={{user, signIn, signUp, signOut}}>
+        <UsuarioContext.Provider value={{user, signIn, signUp, signOut, resetPassword}}>
             {children}
         </UsuarioContext.Provider>
     )

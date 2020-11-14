@@ -38,8 +38,6 @@ export const BotaoTexto = styled.Text`
   color:${props => props.lastClick ? "#673f66" : "#ccc"};
 `
 
-
-
 export const Input = styled.TextInput`
   border:1px solid #ccc;
   height:65px;
@@ -50,7 +48,6 @@ export const Input = styled.TextInput`
 export const InputTexto = styled.Text`
   margin-top:20px;
   color:#b4b8c6;
-  
 `
 
 export const ContainerButtons = styled.View`

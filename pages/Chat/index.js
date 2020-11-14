@@ -4,7 +4,12 @@ import {UsuarioContext} from '../../contexts/user';
 
 import {
   Container,
-  Texto
+  Container5,
+  ContainerMessage,
+  Texto,
+  Input,
+  Button,
+  ButtonText
 } from './styles';
 
 const Chat = () => {
@@ -13,7 +18,15 @@ const Chat = () => {
 
   return (
     <Container>
-      <Texto>{user.email}</Texto>
+      <Container5>
+        <Texto>{user.email}</Texto>
+      </Container5>
+      <ContainerMessage>
+        <Input placeholder="Digite uma mensagem"/>
+        <Button>
+          <ButtonText>Enviar mensagem</ButtonText>
+        </Button>
+      </ContainerMessage>
     </Container>
   )
 }

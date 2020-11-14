@@ -25,7 +25,7 @@ import {UsuarioContext} from '../../contexts/user'
 
 const Login = () => {
 
-  const {signIn, signUp} = useContext(UsuarioContext);
+  const {signIn, signUp, resetPassword} = useContext(UsuarioContext);
 
   const [currentButton, setCurrentButton] = useState('aluno');
   const [email, setEmail] = useState(null)
@@ -41,7 +41,6 @@ const Login = () => {
     } finally {
       setCarregando(false)
     }
-    
   }
 
   function handleSignUp(){
@@ -53,8 +52,20 @@ const Login = () => {
     } finally {
       setCarregando(false)
     }
-    
-    
+  }
+
+  function handleReset(){
+    if(email != "" && email != null){
+      try {
+        resetPassword(email)
+      } catch (error) {
+        console.warn(error)
+      } finally {
+        setCarregando(false)
+      }
+    } else {
+      console.warn("Informe um e-mail")
+    }
   }
 
   return (
@@ -98,7 +109,7 @@ const Login = () => {
         <Input onChangeText={ text => setEmail(text) } placeholder="Digite seu e-mail" value={email}/>
         <InputTexto>Senha</InputTexto>
         <Input onChangeText={ text => setPassword(text) } placeholder="Digite sua senha" secureTextEntry={true} value={password}/>
-        <ForgotPassword>
+        <ForgotPassword onPress={() => { handleReset()}}>
           esqueci minha senha
         </ForgotPassword>
         <ContainerButtons>
