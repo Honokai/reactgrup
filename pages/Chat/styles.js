@@ -7,18 +7,10 @@ export const Container = styled.View`
   flex-direction:column;
   justify-content: center;
   align-items:center;
+  padding-top:25px;
 `;
 
-export const Container5 = styled.View`
-  background-color:#AB1B71;
-  flex:6;
-  padding:10px 10px 0px 10px;
-  flex-direction:column;
-  justify-content: center;
-  align-items:center;
-`;
-
-export const ContainerMessage = styled.View`
+export const ContainerInteractive = styled.View`
   background-color:#AB1B71;
   flex:1;
   padding:10px 10px 0px 10px;
@@ -34,11 +26,11 @@ export const Texto = styled.Text`
 `
 export const Input = styled.TextInput`
   background-color: #fff;
-  border:1px solid #ccc;
+  border: 1px solid #ccc;
   width: 350px;
-  height:65px;
-  margin-top:5px;
-  border-radius:5px;
+  height: 65px;
+  margin-top: 5px;
+  border-radius: 5px;
   padding: 0 20px;
 `
 
@@ -51,7 +43,7 @@ export const Button = styled.TouchableOpacity`
   margin-left: 5px;
   justify-content: center;
   align-items: center;
-  margin-right:${props => props.invert? "10px":"0px"};
+  margin-right: ${props => props.invert? "10px":"0px"};
 `
 
 export const ButtonText = styled.Text`
@@ -59,4 +51,15 @@ export const ButtonText = styled.Text`
  font-size: 16px;
  font-weight: bold;
  text-align: center;
+`
+
+export const ContainerMessages = styled.View`
+  width: 100%;
+  flex: 6;
+`
+
+export const Message = styled.Text`
+  color: #fff;
+  font-size: 20px;
+  text-align: justify;
 `
