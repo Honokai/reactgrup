@@ -1,17 +1,15 @@
 import React, {} from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-import Chat from '../pages/Chat';
-import Settings from '../pages/Settings'
-
+import GrupoStack from '../pages/Chat/stack';
+import SettingsStack from '../pages/Settings/stack';
 
 const Tab = createBottomTabNavigator();
 
 const AppRoutes = () => {
     return (
-        <Tab.Navigator initialRouteName="Grupos"
+        <Tab.Navigator initialRouteName="GrupoStack"
             tabBarOptions={
                 {
                     activeTintColor: '#AB1B71',
@@ -19,24 +17,24 @@ const AppRoutes = () => {
                 }
             }
         >
-            <Tab.Screen name="Grupos" component={Chat} 
-            options={
-                {
-                    tabBarIcon: 
-                    ({color}) => (<MaterialCommunityIcons name="chat" size={32} color={color}/>) 
-                }
-            }
-        />
-            <Tab.Screen name="Configurações" component={Settings}
+            <Tab.Screen name="GrupoStack" component={GrupoStack}
                 options={
                     {
-                        tabBarIcon: 
+                        tabBarIcon: ({color}) => (
+                            <MaterialCommunityIcons name="chat" size={32} color={color}/>
+                        ) 
+                    }
+                }
+            />
+            <Tab.Screen name="Configurações" component={SettingsStack}
+                options={
+                    {
+                        tabBarIcon:
                         ({color}) => (<MaterialCommunityIcons name="settings" size={32} color={color}/>) 
                     }
                 }
             />
         </Tab.Navigator>
-        
     )
 }
 

@@ -7,14 +7,19 @@ import {
   Botao
 } from './styles';
 
+import Gestao from './admin';
+
 import {UsuarioContext} from '../../contexts/user'
 
-const Settings = () => {
+const Settings = ({navigation}) => {
 
   const {signOut} = useContext(UsuarioContext);
 
   return (
     <Container>
+      <Botao onPress={()=>{ navigation.push('Gestao') }}>
+        <Texto>Adicionar alunos a grupos</Texto>
+      </Botao>
       <Botao onPress={()=>{ signOut() }}>
         <Texto>Sair</Texto>
       </Botao>

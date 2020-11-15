@@ -25,3 +25,9 @@ export const Texto = styled.Text`
   text-align: center;
 `
 
+export const ButtonGroupText = styled.Text`
+ color: #fff;
+ font-size: 16px;
+ font-weight: bold;
+ padding: 0px 10px 0px 10px;
+`

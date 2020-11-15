@@ -1,60 +1,73 @@
-import React, { useContext, useState } from 'react';
-import { Text } from 'react-native';
-import {UsuarioContext} from '../../contexts/user';
+import React, { useContext, useEffect, useState } from 'react'
+import { Text } from 'react-native'
+import {UsuarioContext} from '../../contexts/user'
+import {MaterialCommunityIcons} from '@expo/vector-icons'
 
 import {
   Container,
-  ContainerInteractive,
   Texto,
   Input,
-  Button,
-  ButtonText,
-  ContainerMessages,
-  Message
-} from './styles';
+  ButtonGroup,
+  ButtonGroupText,
+  ContainerGrupos
+} from './styles'
 
-import firebase from 'firebase';
+import firebase from 'firebase'
 import 'firebase/firestore'
 
-const Chat = () => {
+const Grupos = ({navigation}) => {
 
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [grupos, setGrupos] = useState([])
+
+  const [userGrupos, setUserGrupos] = useState([])
 
   const {user} = useContext(UsuarioContext)
-  const handleAddMessages = async () => {
-    if (newMessage == "") {
-      console.warn("Digite uma mensagem para envio.")
-      return
-    }
-    try {
-      await firebase.firestore().collection('mensagens').add({
-        texto: newMessage,
-        lida: false,
-        email: user.email
-      })
-    } catch (error) {
-      console.warn("Erro de comunicação")
-    }
+
+  const listenUpdateGrupos = (snap) => {
+    const data = snap.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+    })
+    setGrupos(data)
+    let index = 0
+    data.forEach(elemento => {
+      let presente = false
+      if(Array.isArray(elemento.integrantes)){
+        elemento.integrantes.forEach(email => {
+          if(email == user.email && presente == false){
+            presente = true
+          }
+        })
+      }
+      if(presente == false) {
+        data.splice(index, 1)
+      }
+      index++
+    })
+    setUserGrupos(data)
   }
+
+  useEffect(()=>{
+    const listenerGrupos = firebase.firestore()
+    .collection('AlunosGrupos').onSnapshot(listenUpdateGrupos)
+  },[])
 
   return (
     <Container>
-      <ContainerMessages>
-        {messages.map(message=>(
-          <Message>{message}</Message>
+      <ContainerGrupos>
+        {userGrupos.map(grupo=>(
+          <ButtonGroup key={grupo.id}
+            onPress={()=>(navigation.navigate({ name: "Chat", params: {id: grupo.id ,grupo: grupo.nome} })
+            )}
+          >
+            <ButtonGroupText><MaterialCommunityIcons name="chat" size={32} color={"#000"}/>  {grupo.nome}</ButtonGroupText>
+          </ButtonGroup>
         ))}
-      </ContainerMessages>
-      <ContainerInteractive>
-        <Input placeholder="Digite uma mensagem" 
-          onChangeText={ text=>{setNewMessage(text)}} value={newMessage} 
-        />
-        <Button onPress={() => { handleAddMessages()}}>
-          <ButtonText>Enviar mensagem</ButtonText>
-        </Button>
-      </ContainerInteractive>
+      </ContainerGrupos>
     </Container>
   )
 }
 
-export default Chat
+export default Grupos
