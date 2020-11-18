@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Text } from 'react-native'
+import { Text, StatusBar } from 'react-native'
 import {UsuarioContext} from '../../contexts/user'
 import {MaterialCommunityIcons} from '@expo/vector-icons'
 
@@ -9,7 +9,8 @@ import {
   Input,
   ButtonGroup,
   ButtonGroupText,
-  ContainerGrupos
+  ContainerGrupos,
+  NaoInserido
 } from './styles'
 
 import firebase from 'firebase'
@@ -32,21 +33,26 @@ const Grupos = ({navigation}) => {
     })
     setGrupos(data)
     let index = 0
+    let presente
+    let pertence = []
     data.forEach(elemento => {
-      let presente = false
+      presente = false
       if(Array.isArray(elemento.integrantes)){
-        elemento.integrantes.forEach(email => {
-          if(email == user.email && presente == false){
+        elemento.integrantes.forEach(messageEmail => {
+          if(messageEmail === user.email && presente == false) {
             presente = true
+            pertence.push(data[index])
           }
         })
       }
+      /*
       if(presente == false) {
         data.splice(index, 1)
       }
+      */
       index++
     })
-    setUserGrupos(data)
+    setUserGrupos(pertence)
   }
 
   useEffect(()=>{
@@ -56,15 +62,18 @@ const Grupos = ({navigation}) => {
 
   return (
     <Container>
+      <StatusBar backgroundColor="rgb(140,150,180)" />
       <ContainerGrupos>
-        {userGrupos.map(grupo=>(
-          <ButtonGroup key={grupo.id}
-            onPress={()=>(navigation.navigate({ name: "Chat", params: {id: grupo.id ,grupo: grupo.nome} })
-            )}
-          >
-            <ButtonGroupText><MaterialCommunityIcons name="chat" size={32} color={"#000"}/>  {grupo.nome}</ButtonGroupText>
-          </ButtonGroup>
-        ))}
+        {
+          Array.isArray(userGrupos) && userGrupos.length?userGrupos.map(grupo=>(
+            <ButtonGroup key={grupo.id}
+              onPress={()=>(navigation.navigate({ name: "Chat", params: {id: grupo.id ,grupo: grupo.nome} })
+              )}
+            >
+              <ButtonGroupText><MaterialCommunityIcons name="chat" size={32} color={"#000"}/>  {grupo.nome}</ButtonGroupText>
+            </ButtonGroup>
+          )):<NaoInserido>Este usuário não está inserido em nenhum grupo</NaoInserido>
+        }
       </ContainerGrupos>
     </Container>
   )

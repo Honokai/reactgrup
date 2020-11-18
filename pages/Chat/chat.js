@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, StatusBar } from 'react-native';
 import {UsuarioContext} from '../../contexts/user';
+import {MaterialCommunityIcons} from '@expo/vector-icons'
 
 import {
-  Container,
+  ContainerChat,
   ContainerInteractive,
   Texto,
   Input,
@@ -35,6 +36,10 @@ export const Chat = ({route, navigation}) => {
         ...doc.data()
       }
     })
+    if(data.length > 0){
+      let ultimo = data.length
+      data[ultimo-1].ultimo = true
+    }
     setMessages(data);
   }
 
@@ -63,16 +68,17 @@ export const Chat = ({route, navigation}) => {
   }
 
   return (
-    <Container>
+    <ContainerChat>
+      <StatusBar backgroundColor="rgb(140,150,180)" />
       <ContainerMessages>
         {messages.map(message=>(
-          <Message nativeID={message.id} invert={message.email == user.email ? true : false}>
+          <Message key={message.id} invert={message.email == user.email ? true : false}>
             <MessageSender invert={message.email == user.email ? true : false}>
-              Você
+              {message.email == user.email? "você": message.email}
             </MessageSender>{"\n"}
             {message.texto}{"\n"}
             <MessageDate>
-              {new Date(message.data).toLocaleString()}
+              {new Date(message.data).toLocaleString().substr(0,19)}
             </MessageDate>
           </Message>
         ))}
@@ -83,14 +89,16 @@ export const Chat = ({route, navigation}) => {
         ))}
       </ContainerMessages>
       <ContainerInteractive>
-        <Input placeholder="Digite uma mensagem" 
+        <Input placeholder="Digite uma mensagem"
           onChangeText={ text=>{setNewMessage(text)}} value={newMessage} 
         />
         <Button onPress={() => { handleAddMessages()}}>
-          <ButtonText>Enviar mensagem</ButtonText>
+          <ButtonText>
+            <MaterialCommunityIcons name="send" size={32} color={"#000"}/> 
+          </ButtonText>
         </Button>
       </ContainerInteractive>
-    </Container>
+    </ContainerChat>
   )
 }
 

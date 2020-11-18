@@ -30,7 +30,6 @@ const UsuarioProvider = ({ children }) => {
     const signIn = (email, password) => {
         firebase.auth().signInWithEmailAndPassword(email, password).then(resp => {
         }).catch(err => {
-            console.log(err)
             if(err == "Error: There is no user record corresponding to this identifier. The user may have been deleted."){
                 alert("Não há registro para este usuário.")
             }
@@ -47,13 +46,12 @@ const UsuarioProvider = ({ children }) => {
     const signUp = (email, password) => {
         firebase.auth().createUserWithEmailAndPassword(email, password).then(resp => {
         }).catch(err => {
-            console.warn(err)
+            console.log(err)
         })
     }
 
     const signOut = () => {
         firebase.auth().signOut().then(resp => {
-            console.warn("Usuário deslogado")
         }).catch(err => {
             console.warn(err)
         })

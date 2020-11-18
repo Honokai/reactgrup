@@ -13,9 +13,11 @@ const AppRoutes = () => {
             tabBarOptions={
                 {
                     activeTintColor: '#AB1B71',
-                    inactiveTintColor: '#ccc'
+                    inactiveTintColor: '#ccc',
+                    keyboardHidesTabBar: true,
                 }
             }
+            barStyle={{ backgroundColor: '#000' }}
         >
             <Tab.Screen name="GrupoStack" component={GrupoStack}
                 options={
